@@ -6,25 +6,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Roy's Books</title>
         <link rel="stylesheet" href="main.css" />
+        <!-- CSS only -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+            crossorigin="anonymous"
+        />
     </head>
-    <h1>Roy's Books!</h1>
+    <header class="main-header">
+        <h1 data-trans="title">Roy's Books</h1>
+    </header>
+
     <body onload="onInit()">
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    
-                    <th colspan="3">Actions</th>
-                    <th>Rating</th>
-                </tr>
-            </thead>
+        <select class="lang" onchange="onSetLang(this.value)">
+            <option value="en">English</option>
+            <option value="he">עברית</option>
+            <option value="es">Spanish</option>
+        </select>
 
-            <tbody></tbody>
-        </table>
-
-        <button class="add-book-btn" title="Add Book" onclick="onAddBook()">Add Book</button>
+        <button data-trans="add-book" class="add-book-btn" title="Add Book" onclick="onAddBook()">Add Book</button>
 
         <div class="modal">
             <h3></h3>
@@ -32,28 +33,45 @@
             <h5>Book Description</h5>
             <p></p>
 
-
-            <button onclick="onCloseModal()">Close</button>
+            <button data-trans="close-modal" onclick="onCloseModal()">Close</button>
         </div>
         <div class="user-msg"></div>
 
+        <select class="sort-by" onchange="onSetSortBy(this.value)">
+            <option data-trans="sort" value="">Sort By</option>
+            <option data-trans="rate" value="min-rate">Rate - Low To High</option>
+            <option data-trans="price" value="max-price">Price - High To Low</option>
+        </select>
 
+        <table>
+            <thead>
+                <tr>
+                    <th data-trans="book-id">Id</th>
+                    <th data-trans="book-title">Title</th>
+                    <th data-trans="book-price">Price</th>
 
+                    <th colspan="3" data-trans="book-actions">Actions</th>
+                    <th data-trans="book-rate">Rating</th>
+                </tr>
+            </thead>
 
-        <div>
-            
-            <select class="sort-by" onchange="onSetSortBy(this.value)">
-                <option value="">Sort By</option>
-                <option value="min-rate">Rate - Low To High</option>
-                <option value="max-price">Price - High To Low</option>
-            </select>
-            <label>
-                <!-- Descending
-                <input class="sort-desc" type="checkbox" oninput="onSetSortBy()" />
-                   </div> -->
+            <tbody></tbody>
+        </table>
 
-        
+        <div class="page-btns">
+            <button class="prev" disabled onclick="onMoveToPage('-', this)">&lt;&lt;</button>
+            <span></span>
+            <button class="next" onclick="onMoveToPage('+', this)">&gt;&gt;</button>
+        </div>
+
+        <!-- JavaScript Bundle with Popper -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"
+        ></script>
         <script src="js/services/util.service.js"></script>
+        <script src="js/i18n-service.js"></script>
         <script src="js/services/storage.service.js"></script>
         <script src="js/services/book.service.js"></script>
         <script src="js/book.contoroller.js"></script>

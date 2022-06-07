@@ -1,9 +1,12 @@
 'use strict'
 
 const STORAGE_KEY = 'bookDB'
+const PAGE_SIZE = 6
 
 var gBooks
+var gPageIdx = 0
 var gFilterBy = { title: '', price: 0 }
+var gFilteredBooksCount
 _createBooks()
 
 function _createBook(title, price) {
@@ -20,10 +23,12 @@ function _createBooks() {
   var books = loadFromStorage(STORAGE_KEY)
 
   if (!books || !books.length) {
-    books = []
-    books.push(_createBook('Lord of the rings', 50))
-    books.push(_createBook('Taken', 40))
-    books.push(_createBook('Harry Potter', 45))
+    for (var i = 0; i < 27; i++) {
+      var title = makeLorem(2)
+      title = title.charAt(0).toUpperCase() + title.slice(1)
+      var price = getRandomIntInclusive(10, 30)
+      title.push(_createBook(title, price))
+    }
   }
 
   gBooks = books
@@ -85,4 +90,31 @@ function sortRate() {
 
 function sortPrice() {
   return gBooks.sort((c1, c2) => c2.price - c1.price)
+}
+
+function getPageCount() {
+  return Math.ceil(gFilteredBooksCount / PAGE_SIZE)
+}
+
+function getCurrPage() {
+  return gPageIdx
+}
+
+function moveToPage(page) {
+  if (page === '+') gPageIdx++
+  else if (page === '-') gPageIdx--
+  else gPageIdx = +page
+}
+
+function getBooksForDisplay() {
+  if (!gBooks || !gBooks.length) _createBooks()
+  var books = gBooks
+
+  books = books.filter(book => book.title.includes(gFilterBy.title))
+  books = books.filter(book => book.price < gFilterBy.price)
+
+  gFilteredBooksCount = books.length
+  const startIdx = gPageIdx * PAGE_SIZE
+  books = books.slice(startIdx, startIdx + PAGE_SIZE)
+  return books
 }
